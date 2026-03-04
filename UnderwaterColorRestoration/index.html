@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="author" content="Dana Berman">
+		<meta name="keywords" content="Dana Berman, Tali Treibitz, Shai Avidan, Scattering media, underwater, color restoration, BMVC">
+		<meta name="description" content="Additional results for BMVC'17 paper: Diving into Haze-Lines: Color Restoration of Underwater Images. Dana Berman, Tali Treibitz, Shai Avidan.">
+		<link rel="image_src" type="image/jpeg" href="http://www.eng.tau.ac.il/~berman/UnderwaterColorRestoration/files/GOPR1104.jpg"/>
+		<link rel="canonical" href="www.eng.tau.ac.il/~berman/UnderwaterColorRestoration" />
+		<link rel="icon" href="https://english.tau.ac.il/sites/default/files/TAU_1.ico">
+
+		<title>Diving into Haze-Lines: Color Restoration of Underwater Images</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="../dist/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<link href="../dist/css/ie10-viewport-bug-workaround.css" rel="stylesheet">	
+		
+		<!-- Custom styles for this page -->
+		<link rel="stylesheet" type="text/css" href="../default.css">
+		<link rel="stylesheet" type="text/css" href="./files/mystyle.css">
+		
+		<!-- Image display functions -->
+		<script type="text/JavaScript">
+			<!--
+			function MM_preloadImages() { //v3.0
+			 var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+			  var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+			  if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+			}
+
+			function MM_swapImgRestore() { //v3.0
+			 var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+			}
+
+			function MM_findObj(n, d) { //v4.01
+			 var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+			  d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+			 if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+			 for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+			 if(!x && d.getElementById) x=d.getElementById(n); return x;
+			}
+
+			function MM_swapImage() { //v3.0
+			 var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+			 if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+			}
+			
+			function mark(el, color) {
+			el.style.border = "2px solid blue";
+		}
+			//-->
+		</script>
+		
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-90725514-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+		
+	</head>
+
+<body onload="MM_preloadImages('./files/Ancuti2_galdran_guetzli.jpg',
+'./files/Ancuti2_input.jpg',
+'./files/Ancuti2_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/Ancuti2_proposed.jpg',
+'./files/Ancuti2_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/Ancuti2_udcp.jpg',
+'./files/Ancuti2_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/Ancuti3_galdran_guetzli.jpg',
+'./files/Ancuti3_input.jpg',
+'./files/Ancuti3_lu2015_guetzli.jpg',
+'./files/Ancuti3_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/Ancuti3_proposed.jpg',
+'./files/Ancuti3_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/Ancuti3_udcp.jpg',
+'./files/Ancuti3_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/DSC3212_contrast.jpg',
+'./files/DSC3212_HL.jpg',
+'./files/DSC3212_input.jpg',
+'./files/DSC3212_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/DSC3212_proposed.jpg',
+'./files/DSC3212_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/DSC3212_trans_HL.jpg',
+'./files/DSC3212_trans_proposed.jpg',
+'./files/DSC3212_trans_UDCP.jpg',
+'./files/DSC3212_trans_WCID.jpg',
+'./files/DSC3212_UDCP.jpg',
+'./files/DSC3212_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/DSC3212_WCID.jpg',
+'./files/DSC3353_contrast.jpg',
+'./files/DSC3353_HL.jpg',
+'./files/DSC3353_input.jpg',
+'./files/DSC3353_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/DSC3353_proposed.jpg',
+'./files/DSC3353_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/DSC3353_trans_HL.jpg',
+'./files/DSC3353_trans_proposed.jpg',
+'./files/DSC3353_trans_UDCP.jpg',
+'./files/DSC3353_trans_WCID.jpg',
+'./files/DSC3353_UDCP.jpg',
+'./files/DSC3353_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/DSC3353_WCID.jpg',
+'./files/galdran1_galdran.jpg',
+'./files/galdran1_input.jpg',
+'./files/galdran1_NT16_AnCo_RF_10.jpg',
+'./files/galdran1_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/galdran1_proposed.jpg',
+'./files/galdran1_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/galdran1_udcp.jpg',
+'./files/galdran1_UWCT_ICIP2017_img_00495cDCP.jpg',
+'./files/GOPR1104.jpg',
+'./files/IMG_1620_contrast.jpg',
+'./files/IMG_1620_HL.jpg',
+'./files/IMG_1620_input.jpg',
+'./files/IMG_1620_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/IMG_1620_proposed.jpg',
+'./files/IMG_1620_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/IMG_1620_trans_HL.jpg',
+'./files/IMG_1620_trans_proposed.jpg',
+'./files/IMG_1620_trans_UDCP.jpg',
+'./files/IMG_1620_trans_WCID.jpg',
+'./files/IMG_1620_UDCP.jpg',
+'./files/IMG_1620_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/IMG_1620_WCID.jpg',
+'./files/initial_carlevaris.jpg',
+'./files/initial_input.jpg',
+'./files/initial_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/initial_peng.jpg',
+'./files/initial_proposed.jpg',
+'./files/initial_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/initial_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/none.jpg',
+'./files/none2.jpg',
+'./files/none3.jpg',
+'./files/P6284562_contrast.jpg',
+'./files/P6284562_HL.jpg',
+'./files/P6284562_input.jpg',
+'./files/P6284562_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/P6284562_proposed.jpg',
+'./files/P6284562_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/P6284562_trans_HL.jpg',
+'./files/P6284562_trans_proposed.jpg',
+'./files/P6284562_trans_UDCP.jpg',
+'./files/P6284562_trans_WCID.jpg',
+'./files/P6284562_UDCP.jpg',
+'./files/P6284562_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/P6284562_WCID.jpg',
+'./files/RGT0346_contrast.jpg',
+'./files/RGT0346_distance_guetzli.jpg',
+'./files/RGT0346_HL.jpg',
+'./files/RGT0346_input.jpg',
+'./files/RGT0346_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/RGT0346_proposed.jpg',
+'./files/RGT0346_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/RGT0346_trans_HL.jpg',
+'./files/RGT0346_trans_proposed.jpg',
+'./files/RGT0346_trans_UDCP.jpg',
+'./files/RGT0346_trans_WCID.jpg',
+'./files/RGT0346_UDCP.jpg',
+'./files/RGT0346_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/RGT0346_WCID.jpg',
+'./files/RGT3014_contrast.jpg',
+'./files/RGT3014_distance_guetzli.jpg',
+'./files/RGT3014_HL.jpg',
+'./files/RGT3014_input.jpg',
+'./files/RGT3014_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/RGT3014_proposed.jpg',
+'./files/RGT3014_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/RGT3014_trans_HL.jpg',
+'./files/RGT3014_trans_proposed.jpg',
+'./files/RGT3014_trans_UDCP.jpg',
+'./files/RGT3014_trans_WCID.jpg',
+'./files/RGT3014_UDCP.jpg',
+'./files/RGT3014_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/RGT3014_WCID.jpg',
+'./files/RGT3858_contrast.jpg',
+'./files/RGT3858_HL.jpg',
+'./files/RGT3858_input.jpg',
+'./files/RGT3858_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/RGT3858_proposed.jpg',
+'./files/RGT3858_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/RGT3858_trans_HL.jpg',
+'./files/RGT3858_trans_proposed.jpg',
+'./files/RGT3858_trans_UDCP.jpg',
+'./files/RGT3858_trans_WCID.jpg',
+'./files/RGT3858_UDCP.jpg',
+'./files/RGT3858_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/RGT3858_WCID.jpg',
+'./files/shipwreck_carlevaris.jpg',
+'./files/shipwreck_galdran.jpg',
+'./files/shipwreck_input.jpg',
+'./files/shipwreck_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/shipwreck_proposed.jpg',
+'./files/shipwreck_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/shipwreck_udcp.jpg',
+'./files/shipwreck_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/ship_carlevaris_guetzli.jpg',
+'./files/ship_highres_input.jpg',
+'./files/ship_highres_NT16_AnCo_RF_10_guetzli.jpg',
+'./files/ship_highres_proposed.jpg',
+'./files/ship_highres_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',
+'./files/ship_highres_UWCT_ICIP2017_img_00495cDCP_.jpg',
+'./files/ship_peng_guetzli.jpg',
+)"> 
+
+   <div class="container">
+		<div class="page-header text-center">
+			<h1>Diving into Haze-Lines: Color Restoration of Underwater Images</h1>
+			<div class="h3link"><a href="../index.html">Dana Berman</a>, <a href="http://marsci.haifa.ac.il/profiles/tTreibitz/">Tali Treibitz</a>, <a href="http://www.eng.tau.ac.il/~avidan/">Shai Avidan</a></div>
+			<BR>
+		</div> <!-- class="page-header" -->
+	
+
+	<h2>Abstract</h2>
+		<div class="row">
+			<div class="col-xs-12 col-sm-9">	
+				<p>
+Underwater images suffer from color distortion and low contrast. This is because light is attenuated as it propagates through water. The attenuation varies with wavelength and depends both on the properties of the water body in which the image was taken and the 3D structure of the scene, making it difficult to restore the colors. Existing single underwater image enhancement techniques either ignore the wavelength dependency of the attenuation, or assume a specific spectral profile. We propose a new method that takes into account multiple spectral profiles of different water types, and restores underwater scenes from a single image.
+
+We show that by estimating just two additional global parameters - the attenuation ratios of the blue-red and blue-green color channels - the problem of underwater image restoration can be reduced to single image dehazing, where all color channels have the same attenuation coefficients.
+Since we do not know the water type ahead of time, we try different parameter sets out of an existing library of water types. Each set leads to a different restored image and the one that best satisfies the Gray-World assumption is chosen. The proposed single underwater image restoration method is fully automatic and is based on a more comprehensive physical image formation model than previously used.
+
+We collected a dataset of real images taken in different locations with varying water properties and placed color charts in the scenes. Moreover, to obtain ground truth, the 3D structure of the scene was calculated based on stereo imaging. This dataset enables a quantitative evaluation of restoration algorithms on natural images and shows the advantage of the proposed method.				</p>
+
+			</div>
+			<div class="col-sm-3 div-to-hide">
+				<div >				
+					<img class="img-responsive" src="./files/GOPR1104.jpg" />
+				</div>   				
+			</div>
+		</div>
+
+<hr>
+<h2>Publication</h2>
+<p>
+	Diving into Haze-Lines: Color Restoration of Underwater Images. Berman, D. and Treibitz, T. and Avidan S., British Machine Vision Conference (BMVC) 2017
+</p>
+<p>
+	<a href="UnderwaterHazeLines_BMVC2017.pdf"><img src="../images/pdf_icon.png" alt="paper" height="40px"></a> &nbsp;
+	<a href="UnderwaterHazeLines.bib"><img src="../images/bib_icon.png" alt="paper" height="40px"></a> &nbsp;
+</p>
+
+<hr>
+
+<h2 id="SourceCode">Source Code</h2>
+<p>
+	The <a href="https://github.com/danaberman/underwater-hl">code</a> is provided under <a href="Non-commercial_copyright_license.rtf">this license agreement</a>.  &nbsp; <a href="https://github.com/danaberman/underwater-hl"><img src="../images/matlab_icon.png" alt="matlab source code" height=40px"></a><br>
+	This code has minor changes compared to the results in the paper.
+</p>
+
+<hr>
+
+<a name="Dataset"></a><h2>Dataset</h2>
+<p>
+	<h3><b>Update:</b> <a href="http://csms.haifa.ac.il/profiles/tTreibitz/datasets/ambient_forwardlooking/index.html">A large scale dataset is available here</a>.</h3> <br>
+    The raw images from the figures in the paper are available for <a href="./files/raw_images.zip">download</a>.<br>
+    We highly recommend converting them using this <a href="https://github.com/danaberman/camera-pipeline-UI">camera pipeline</a>.<br>
+    <div class="row">
+        <div class="col-xs-2">
+            <a href="./files/RGT_3014.NEF"><img src="./files/RGT3014_input.jpg" alt="Fig. 3" width="100%"></a>
+        </div>
+        <div class="col-xs-10">
+            Fig. 3<br>
+            Mediterranean Sea, <a href="https://goo.gl/maps/yF96SreDGkL2">Nachsholim Beach</a>.<br>
+            Depth: 5m. Date: April 19th, 2017. Time: 12 noon.<br>
+            Download links: <a href="./files/RGT_3014.NEF">raw image</a>, <a href="./files/RGT_3014_trans_output.mat">estimated 3-channel transmission and attenuations coeffs.</a><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">
+            <a href="./files/RGT_0346.NEF"><img src="./files/RGT0346_input.jpg" alt="Fig. 4" width="100%"></a>
+        </div>
+        <div class="col-xs-10">
+            Fig. 4<br>
+            Red Sea, <a href="https://goo.gl/maps/uWAZUeJBJWE2">Dekel Beach</a>.<br>
+            Depth: 20m. Date: December 22nd, 2016. Time: 9:38AM.<br>
+            Download links: <a href="./files/RGT_0346.NEF">raw image</a>, <a href="./files/RGT_0346_trans_output.mat">estimated 3-channel transmission and attenuations coeffs.</a><br>
+        </div>
+    </div>
+	If you use these images, please <a href="UnderwaterHazeLines.bib">cite the paper</a>.
+</p>
+
+<hr>		
+<h2>Supplementary Material</h2>
+
+<p>
+We show here additional results that were not included in the paper for lack of space. 
+Some of the results from the paper are included here as well, since we find it easier to compare 
+images in this interface.<br>
+We present results both on <a href="#Raw">RAW</a> and <a href="#JPEG">JPEG</a> input images.<br>
+To switch between images please use the colored buttons on the left. <br>
+Please note that the result images are initialized to <span style="background-color: #4D6C9B"> <b>our results</b></span>.<br>
+A complete <a href="#References">list of references</a> is given at the end.<br>
+</p>
+
+
+<!------------------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------------------>
+
+<a name="Raw"> </a><h3>Input: Raw Images</h3>
+
+<p>
+The transmission maps are displayed along with the images. They are color-mapped: warm colors indicate high values, while cold color indicate low values.<br>
+Please note that the buttons on the left switch both the image and the transmission map. <br>
+In order to increase <span style="background-color: #2D1C2B" color="white"> <b><font color="white">contrast</font></b></span>, as well as for methods by Ancuti et al., no transmission map is estimated.<br>
+</p>
+
+
+<!------------------------------------------>
+
+<h4>Fig. 3</h4>
+<div align="left" >
+<p class="h4margin">High resolution images. Note that the transmission and the distance have different scales.</p>
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="RGT3014_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_contrast.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_RGT3014','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="RGT3014_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_WCID.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_RGT3014','','./files/RGT3014_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="RGT3014_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+              document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_UDCP.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_RGT3014','','./files/RGT3014_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="RGT3014_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_RGT3014','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="RGT3014_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_RGT3014','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="RGT3014_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_RGT3014','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="RGT3014_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_HL.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_RGT3014','','./files/RGT3014_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="RGT3014_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3014_HL').style.fontWeight='normal';
+              document.getElementById('RGT3014_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3014_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3014_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3014_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3014_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3014','','./files/RGT3014_proposed.jpg',1);
+			  document.getElementById('auto_img_RGT3014').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_RGT3014','','./files/RGT3014_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_RGT3014').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>  <!--Done with column of buttons -->
+		<td valign ="bottom">  <!--Column of images -->
+		Input Image
+		<br>
+		<img src="./files/RGT3014_input.jpg"  style="border:5px solid black"  width="100%" alt="Input">
+		<br>
+		Output Image
+		<br>
+		<img src="./files/RGT3014_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_RGT3014" />
+		</td>
+		<td valign ="bottom">  <!--Column of distances -->
+		True distance based on stereo
+		<br>
+		<img src="./files/RGT3014_distance_guetzli.jpg"  style="border:5px solid black"  width="100%" alt="True distances based on stereo">
+		<br>
+		Output Transmission Map
+		<br>
+		<img src="./files/RGT3014_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_RGT3014" />
+		</td>
+	</tr>
+</table>
+</div>
+
+
+
+
+
+<h4>Fig. 4</h4>
+<div align="left" >
+<p class="h4margin">High resolution images. Note that the transmission and the distance have different scales.</p>
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br>
+			<button type="button" class="contrast" id="RGT0346_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_contrast.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_RGT0346','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="RGT0346_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_WCID.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_RGT0346','','./files/RGT0346_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="RGT0346_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+              document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_UDCP.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_RGT0346','','./files/RGT0346_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="RGT0346_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+              document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_RGT0346','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="RGT0346_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+              document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_RGT0346','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="RGT0346_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_HL').style.fontWeight='normal';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+              document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_RGT0346','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="RGT0346_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_proposed').style.fontWeight='normal';
+              document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_HL.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_RGT0346','','./files/RGT0346_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="RGT0346_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT0346_HL').style.fontWeight='normal';
+              document.getElementById('RGT0346_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT0346_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT0346_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT0346_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT0346_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT0346','','./files/RGT0346_proposed.jpg',1);
+			  document.getElementById('auto_img_RGT0346').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_RGT0346','','./files/RGT0346_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_RGT0346').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>  <!--Done with column of buttons -->
+		<td valign ="bottom">  <!--Column of images -->
+		Input Image
+		<br>
+		<img src="./files/RGT0346_input.jpg"  style="border:5px solid black"  width="100%" alt="Input">
+		<br>
+		Output Image
+		<br>
+		<img src="./files/RGT0346_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_RGT0346" />
+		</td>
+		<td valign ="bottom">  <!--Column of distances -->
+		True distance based on stereo
+		<br>
+		<img src="./files/RGT0346_distance_guetzli.jpg"  style="border:5px solid black"  width="100%" alt="True distances based on stereo">
+		<br>
+		Output Transmission Map
+		<br>
+		<img src="./files/RGT0346_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_RGT0346" />
+		</td>
+	</tr>
+</table>
+</div>
+
+
+
+<h4>Corals</h4>
+<div align="left" >
+<p class="h4margin">Notice that applying contrast enhancement corrects the colors of the foreground colors, while leaving the ones in the background blue. <br>In contrast, the proposed method removes the blue hue from the objects that are further away from the camera.</p>
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="IMG_1620_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+              document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_contrast.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/none3.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="IMG_1620_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+              document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_WCID.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/IMG_1620_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="IMG_1620_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+              document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_UDCP.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/IMG_1620_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="IMG_1620_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+              document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/none3.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="IMG_1620_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+              document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/none3.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="IMG_1620_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+              document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/none3.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="IMG_1620_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_proposed').style.fontWeight='normal';
+              document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_HL.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/IMG_1620_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="IMG_1620_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('IMG_1620_HL').style.fontWeight='normal';
+              document.getElementById('IMG_1620_ancuti').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti17').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_ancuti18').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_WCID').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_contrast').style.fontWeight='normal';
+			  document.getElementById('IMG_1620_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_IMG_1620','','./files/IMG_1620_proposed.jpg',1);
+			  document.getElementById('auto_img_IMG_1620').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_IMG_1620','','./files/IMG_1620_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_IMG_1620').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>
+		Input Image<br /><img src="./files/IMG_1620_input.jpg"  style="border:5px solid black"  width="100%" alt="Input"><br>
+		Output Image<br /><img src="./files/IMG_1620_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_IMG_1620" /></div></td>
+		</td>
+		<td valign ="bottom"><div>Output Transmission Map<br /><img src="./files/IMG_1620_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_IMG_1620" /></div></td>
+	</tr>
+</table>
+</div>
+
+<h4>Rocks</h4>
+<div align="left" >
+<p class="h4margin">Dark Channel Prior-based methods fail in this case, since the prior is does not hold on the bright sand in the foreground.<br>
+The table shows the median angle in RGB space between the neutral patches in each of the two color charts and a pure white [1,1,1] (in degrees). Lower is better.
+ </p>
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="RGT3858_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_contrast.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_RGT3858','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="RGT3858_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+              document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_WCID.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_RGT3858','','./files/RGT3858_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="RGT3858_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+              document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_UDCP.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_RGT3858','','./files/RGT3858_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="RGT3858_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_RGT3858','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="RGT3858_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_RGT3858','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="RGT3858_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_HL').style.fontWeight='normal';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_RGT3858','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="RGT3858_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_proposed').style.fontWeight='normal';
+              document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_HL.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_RGT3858','','./files/RGT3858_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="RGT3858_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('RGT3858_HL').style.fontWeight='normal';
+              document.getElementById('RGT3858_ancuti').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti17').style.fontWeight='normal';
+			  document.getElementById('RGT3858_ancuti18').style.fontWeight='normal';
+			  document.getElementById('RGT3858_WCID').style.fontWeight='normal';
+			  document.getElementById('RGT3858_contrast').style.fontWeight='normal';
+			  document.getElementById('RGT3858_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_RGT3858','','./files/RGT3858_proposed.jpg',1);
+			  document.getElementById('auto_img_RGT3858').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_RGT3858','','./files/RGT3858_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_RGT3858').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>  <!--Done with column of buttons -->
+		<td valign ="bottom">  <!--Column of images -->
+		Input Image
+		<br>
+		<img src="./files/RGT3858_input.jpg"  style="border:5px solid black"  width="100%" alt="Input">
+		<br>
+		Output Image
+		<br>
+		<img src="./files/RGT3858_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_RGT3858" />
+		</td>
+		<td valign ="bottom">  <!--Column of distances -->
+			<table class="angles" style="width:60%">
+			  <tr class="angles">
+				<th class="angles">Method</th>
+				<th class="angles">Macbeth</th> 
+				<th class="angles">QP202</th>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Input</td>
+				<td class="angles">16.75</td> 
+				<td class="angles">20.48</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">WCID</td>
+                <td class="angles">27.43</td> 
+				<td class="angles">35.97</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">UDCP</td>
+				<td class="angles">21.0</td> 
+				<td class="angles">35.53</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">HL</td>
+				<td class="angles">10.27</td> 
+				<td class="angles">14.05</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2016</td>
+				<td class="angles">11.06</td> 
+				<td class="angles">13.73</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2017</td>
+				<td class="angles">4.92</td> 
+				<td class="angles">14.37</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2018</td>
+				<td class="angles">1.21</td> 
+				<td class="angles">6.67</td>
+			  </tr> 
+			  <tr class="angles">
+				<td class="angles">Our result</td>
+				<td class="angles">1.78</td> 
+				<td class="angles">5.16</td>
+			  </tr>
+			</table>			
+		<br>
+		Output Transmission Map
+		<br>
+		<img src="./files/RGT3858_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_RGT3858" />
+		</td>
+	</tr>
+</table>
+</div>
+
+
+<h4>Structures</h4>
+<div align="left" >
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="DSC3353_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+              document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_contrast.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_DSC3353','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="DSC3353_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+              document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_WCID.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_DSC3353','','./files/DSC3353_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="DSC3353_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+              document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_UDCP.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_DSC3353','','./files/DSC3353_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="DSC3353_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_DSC3353','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="DSC3353_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_DSC3353','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="DSC3353_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_DSC3353','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="DSC3353_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_HL.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_DSC3353','','./files/DSC3353_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="DSC3353_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3353_HL').style.fontWeight='normal';
+              document.getElementById('DSC3353_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3353_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3353_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3353_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3353_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3353','','./files/DSC3353_proposed.jpg',1);
+			  document.getElementById('auto_img_DSC3353').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_DSC3353','','./files/DSC3353_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_DSC3353').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>  <!--Done with column of buttons -->
+		<td valign ="bottom">  <!--Column of images -->
+		Input Image
+		<br>
+		<img src="./files/DSC3353_input.jpg"  style="border:5px solid black"  width="100%" alt="Input">
+		<br>
+		Output Image
+		<br>
+		<img src="./files/DSC3353_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_DSC3353" />
+		</td>
+		<td valign ="bottom">  <!--Column of distances -->
+			<table class="angles" style="width:60%">
+			  <tr class="angles">
+				<th class="angles">Method</th>
+				<th class="angles">Macbeth</th> 
+				<th class="angles">QP202</th>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Input</td>
+				<td class="angles">36.38</td> 
+				<td class="angles">24.89</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">WCID</td>
+				<td class="angles">35.78</td> 
+				<td class="angles">35.43</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">UDCP</td>
+				<td class="angles">40.42</td> 
+				<td class="angles">41.55</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">HL</td>
+				<td class="angles">32.57</td> 
+				<td class="angles">17.76</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2016</td>
+				<td class="angles">30.12</td> 
+				<td class="angles">17.73</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2017</td>
+				<td class="angles">16.68</td> 
+				<td class="angles">6.62</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2018</td>
+				<td class="angles">12.26</td> 
+				<td class="angles">3.69</td>
+			  </tr> 
+			  <tr class="angles">
+				<td class="angles">Our result</td>
+				<td class="angles">12.46</td> 
+				<td class="angles">12.56</td>
+			  </tr>
+			</table>			
+		<br>
+		Output Transmission Map
+		<br>
+		<img src="./files/DSC3353_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_DSC3353" />
+		</td>
+	</tr>
+</table>
+</div>
+
+<h4>Structures - different angle</h4>
+<div align="left" >
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="DSC3212_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+              document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_contrast.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_DSC3212','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="DSC3212_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+              document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_WCID.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_DSC3212','','./files/DSC3212_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="DSC3212_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+              document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_UDCP.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_DSC3212','','./files/DSC3212_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="DSC3212_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_DSC3212','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="DSC3212_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_DSC3212','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="DSC3212_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_HL').style.fontWeight='normal';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_DSC3212','','./files/none.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="DSC3212_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_proposed').style.fontWeight='normal';
+              document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_HL.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_DSC3212','','./files/DSC3212_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="DSC3212_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('DSC3212_HL').style.fontWeight='normal';
+              document.getElementById('DSC3212_ancuti').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti17').style.fontWeight='normal';
+			  document.getElementById('DSC3212_ancuti18').style.fontWeight='normal';
+			  document.getElementById('DSC3212_WCID').style.fontWeight='normal';
+			  document.getElementById('DSC3212_contrast').style.fontWeight='normal';
+			  document.getElementById('DSC3212_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_DSC3212','','./files/DSC3212_proposed.jpg',1);
+			  document.getElementById('auto_img_DSC3212').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_DSC3212','','./files/DSC3212_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_DSC3212').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>  <!--Done with column of buttons -->
+		<td valign ="bottom">  <!--Column of images -->
+		Input Image
+		<br>
+		<img src="./files/DSC3212_input.jpg"  style="border:5px solid black"  width="100%" alt="Input">
+		<br>
+		Output Image
+		<br>
+		<img src="./files/DSC3212_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_DSC3212" />
+		</td>
+		<td valign ="bottom">  <!--Column of distances -->
+			<table class="angles" style="width:60%">
+			  <tr class="angles">
+				<th class="angles">Method</th>
+				<th class="angles">Macbeth</th> 
+				<th class="angles">QP202</th>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Input</td>
+				<td class="angles">30.54</td> 
+				<td class="angles">21.69</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">WCID</td>
+                <td class="angles">35.52</td> 
+				<td class="angles">35.38</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">UDCP</td>
+				<td class="angles">21.0</td> 
+				<td class="angles">35.53</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">HL</td>
+				<td class="angles">35.52</td> 
+				<td class="angles">35.38</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2016</td>
+				<td class="angles">29.3</td> 
+				<td class="angles">13.61</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2017</td>
+				<td class="angles">19.56</td> 
+				<td class="angles">9.08</td>
+			  </tr>
+			  <tr class="angles">
+				<td class="angles">Ancuti et al. 2018</td>
+				<td class="angles">15.98</td> 
+				<td class="angles">4.79</td>
+			  </tr>              
+			  <tr class="angles">
+				<td class="angles">Our result</td>
+				<td class="angles">14.45</td> 
+				<td class="angles">15.50</td>
+			  </tr>
+			</table>			
+		<br>
+		Output Transmission Map
+		<br>
+		<img src="./files/DSC3212_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_DSC3212" />
+		</td>
+	</tr>
+</table>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------------------>
+<BR>
+
+<a name="JPEG"> </a><h3>Input: JPEG Images</h3>
+
+<h4>Coral Reef</h4>
+<div align="left" >
+<table>
+	<tr>
+		<td valign ="bottom">
+			Restoration Methods
+			<br />
+			<button type="button" class="contrast" id="P6284562_contrast" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+              document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_contrast.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #2D1C2B';
+			  MM_swapImage('auto_trans_P6284562','','./files/none2.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #2D1C2B'">
+			  Contrast
+			</button>
+			<button type="button" class="WCID" id="P6284562_WCID" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+              document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_WCID.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #7C6E7B';
+			  MM_swapImage('auto_trans_P6284562','','./files/P6284562_trans_WCID.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #7C6E7B'">
+			  [WCID - Chiang and Chen 2012]
+			</button>
+			<button type="button" class="UDCP" id="P6284562_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+              document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_UDCP.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #558884';
+			  MM_swapImage('auto_trans_P6284562','','./files/P6284562_trans_UDCP.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #558884'">
+			  [UDCP - Drews et al. 2013]
+			</button>
+			<button type="button" class="Ancuti" id="P6284562_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+              document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #B3B3D2';
+			  MM_swapImage('auto_trans_P6284562','','./files/none2.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="P6284562_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+              document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #D7F5D5';
+			  MM_swapImage('auto_trans_P6284562','','./files/none2.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="P6284562_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_HL').style.fontWeight='normal';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+              document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #F2E1B2';
+			  MM_swapImage('auto_trans_P6284562','','./files/none2.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+            <button type="button" class="HL" id="P6284562_HL" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_proposed').style.fontWeight='normal';
+              document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_HL.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #7E71A8';
+			  MM_swapImage('auto_trans_P6284562','','./files/P6284562_trans_HL.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #7E71A8'">
+			  [HL - Berman et al. 2016]
+			</button>
+			<button type="button" class="proposed" id="P6284562_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('P6284562_HL').style.fontWeight='normal';
+              document.getElementById('P6284562_ancuti').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti17').style.fontWeight='normal';
+			  document.getElementById('P6284562_ancuti18').style.fontWeight='normal';
+			  document.getElementById('P6284562_WCID').style.fontWeight='normal';
+			  document.getElementById('P6284562_contrast').style.fontWeight='normal';
+			  document.getElementById('P6284562_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_P6284562','','./files/P6284562_proposed.jpg',1);
+			  document.getElementById('auto_img_P6284562').style.border='5px solid #4D6C9B';
+			  MM_swapImage('auto_trans_P6284562','','./files/P6284562_trans_proposed.jpg',1);
+			  document.getElementById('auto_trans_P6284562').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>
+		Input Image<br /><img src="./files/P6284562_input.jpg"  style="border:5px solid black"  width="100%" alt="Input"><br>
+		Output Image<br /><img src="./files/P6284562_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Output Image" id="auto_img_P6284562" /></div></td>
+		</td>
+		<td valign ="bottom"><div>Output Transmission Map<br /><img src="./files/P6284562_trans_proposed.jpg" style="border:5px solid #4D6C9B" width="100%" alt="Transmission Map" id="auto_trans_P6284562" /></div></td>
+	</tr>
+</table>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------------------>
+
+<div align="left">
+<h4>Stripe Damselfish</h4>
+<p class="h4margin" >Our method is able to remove the blue color cast on the coral in the background, as well as the sand.</p>
+<table>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="Carlevaris_Bianco" id="initial_carlevaris" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_peng').style.fontWeight='normal';
+			  document.getElementById('initial_proposed').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti17').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_carlevaris.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #A2B86C'">
+			  [Carlevaris-Bianco et al. 2010]
+			</button>
+			<button type="button" class="Peng" id="initial_peng" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_carlevaris').style.fontWeight='normal';
+			  document.getElementById('initial_proposed').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti17').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_peng.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #7A4A4F'">
+			  [Peng et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="initial_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_peng').style.fontWeight='normal';
+			  document.getElementById('initial_carlevaris').style.fontWeight='normal';
+			  document.getElementById('initial_proposed').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti17').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="initial_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_peng').style.fontWeight='normal';
+			  document.getElementById('initial_carlevaris').style.fontWeight='normal';
+			  document.getElementById('initial_proposed').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="initial_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_peng').style.fontWeight='normal';
+			  document.getElementById('initial_carlevaris').style.fontWeight='normal';
+			  document.getElementById('initial_proposed').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="initial_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('initial_peng').style.fontWeight='normal';
+			  document.getElementById('initial_carlevaris').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti17').style.fontWeight='normal';
+			  document.getElementById('initial_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_initial','','./files/initial_proposed.jpg',1);
+			  document.getElementById('auto_img_initial').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/initial_proposed.jpg" style="border:5px solid #4D6C9B" height="585" width="480" alt="Output Image" id="auto_img_initial" /></div></td>
+		<td><div>Input Image<br /><img src="./files/initial_input.jpg" style="border:5px solid black" height="585" width="480" alt="Input"></div></td>
+	</tr>
+</table>
+</div>
+
+<div align="left">
+<h4>Submerged vessel with diver</h4>
+<p class="h4margin" >Our method is able to remove the blue color cast from the farther part of the ship on the right.</p>
+<table>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="Carlevaris_Bianco" id="ship_carlevaris" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_peng').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti17').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti18').style.fontWeight='normal';
+			  document.getElementById('ship_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_carlevaris_guetzli.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #A2B86C'">
+			  [Carlevaris-Bianco et al. 2010]
+			</button>
+			<button type="button" class="Peng" id="ship_peng" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_carlevaris').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti17').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti18').style.fontWeight='normal';
+			  document.getElementById('ship_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_peng_guetzli.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #7A4A4F'">
+			  [Peng et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="ship_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_peng').style.fontWeight='normal';
+			  document.getElementById('ship_carlevaris').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti17').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti18').style.fontWeight='normal';
+			  document.getElementById('ship_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_highres_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="ship_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_peng').style.fontWeight='normal';
+			  document.getElementById('ship_carlevaris').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti18').style.fontWeight='normal';
+			  document.getElementById('ship_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_highres_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="ship_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_peng').style.fontWeight='normal';
+			  document.getElementById('ship_carlevaris').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti17').style.fontWeight='normal';
+			  document.getElementById('ship_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_highres_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="ship_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('ship_peng').style.fontWeight='normal';
+			  document.getElementById('ship_carlevaris').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti17').style.fontWeight='normal';
+			  document.getElementById('ship_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_ship','','./files/ship_highres_proposed.jpg',1);
+			  document.getElementById('auto_img_ship').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/ship_highres_proposed.jpg" style="border:5px solid #4D6C9B" height="270" width="480" alt="Output Image" id="auto_img_ship" /></div></td>
+		<td><div>Input Image<br /><img src="./files/ship_highres_input.jpg" style="border:5px solid black" height="270" width="480" alt="Input"></div></td>
+	</tr>
+</table>
+</div>
+
+<div align="left">
+<h4>Coral reef</h4>
+<p class="h4margin" >While most methods fail to remove the blue color cast of the background, our methods produce realistic colors with excellent contrast in the foreground.<br>* The result of [Ancuti et al. 2016] is shown in low resolution, we could not find a high-resolution image.</p>
+<table>
+	<tr>
+		<td></td>
+		<td><div>Input Image<br /><img src="./files/Ancuti3_input.jpg" style="border:5px solid black" height="750" width="1000" alt="Ancuti3 Input"></div></td>
+	</tr>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="UDCP" id="Ancuti3_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_udcp.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #558884'">
+			  UDCP [Drews et al. 2013]
+			</button>
+			<button type="button" class="Galdran" id="Ancuti3_galdran" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_galdran_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #0F6B78'">
+			  [Galdran et al. 2015]
+			</button>
+			<button type="button" class="Lu" id="Ancuti3_Lu" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_lu2015_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #6A6C7A'">
+			  [Lu et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="Ancuti3_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="Ancuti3_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="Ancuti3_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="Ancuti3_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti3_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_Lu').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti3_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti3','','./files/Ancuti3_proposed.jpg',1);
+			  document.getElementById('auto_img_Ancuti3').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/Ancuti3_proposed.jpg" style="border:5px solid #4D6C9B" height="750" width="1000" alt="Output Image" id="auto_img_Ancuti3" /></div></td>
+	</tr>
+</table>
+</div>
+
+<div align="left">
+<h4>Coral reef</h4>
+<p class="h4margin" >None of the methods is able to completely remove the color cast of the farther reef at the top-left.<br>* The result of [Ancuti et al. 2016] is shown in low resolution, we could not find a high-resolution image.</p>
+<table>
+	<tr>
+		<td></td>
+		<td><div>Input Image<br /><img src="./files/galdran1_input.jpg" style="border:5px solid black" height="750" width="1000" alt="galdran1 Input"></div></td>
+	</tr>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="UDCP" id="galdran1_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_galdran').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti').style.fontWeight='normal';
+			  document.getElementById('galdran1_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_udcp.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #558884'">
+			  UDCP [Drews et al. 2013]
+			</button>
+			<button type="button" class="Galdran" id="galdran1_galdran" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_ancuti').style.fontWeight='normal';
+			  document.getElementById('galdran1_UDCP').style.fontWeight='normal';
+			  document.getElementById('galdran1_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_galdran.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #0F6B78'">
+			  [Galdran et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="galdran1_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_galdran').style.fontWeight='normal';
+			  document.getElementById('galdran1_UDCP').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti17').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti18').style.fontWeight='normal';
+			  document.getElementById('galdran1_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="galdran1_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_galdran').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti18').style.fontWeight='normal';
+			  document.getElementById('galdran1_UDCP').style.fontWeight='normal';
+			  document.getElementById('galdran1_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_UWCT_ICIP2017_img_00495cDCP.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="galdran1_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_galdran').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti17').style.fontWeight='normal';
+			  document.getElementById('galdran1_UDCP').style.fontWeight='normal';
+			  document.getElementById('galdran1_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="galdran1_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('galdran1_galdran').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti17').style.fontWeight='normal';
+			  document.getElementById('galdran1_ancuti18').style.fontWeight='normal';
+			  document.getElementById('galdran1_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_galdran1','','./files/galdran1_proposed.jpg',1);
+			  document.getElementById('auto_img_galdran1').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/galdran1_proposed.jpg" style="border:5px solid #4D6C9B" height="750" width="1000" alt="Output Image" id="auto_img_galdran1" /></div></td>
+	</tr>
+</table>
+</div>
+
+<div align="left">
+<h4>Vessel</h4>
+<table>
+	<tr>
+		<td></td>
+		<td><div>Input Image<br /><img src="./files/shipwreck_input.jpg" style="border:5px solid black" height="561" width="691" alt="shipwreck Input"></div></td>
+	</tr>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="Carlevaris_Bianco" id="shipwreck_carlevaris" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_carlevaris.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #A2B86C'">
+			  [Carlevaris-Bianco et al. 2010]
+			</button>
+			<button type="button" class="UDCP" id="shipwreck_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_udcp.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #558884'">
+			  UDCP [Drews et al. 2013]
+			</button>
+			<button type="button" class="Galdran" id="shipwreck_galdran" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_galdran.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #0F6B78'">
+			  [Galdran et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="shipwreck_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="shipwreck_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="shipwreck_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="shipwreck_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('shipwreck_carlevaris').style.fontWeight='normal';
+			  document.getElementById('shipwreck_galdran').style.fontWeight='normal';
+			  document.getElementById('shipwreck_UDCP').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti17').style.fontWeight='normal';
+			  document.getElementById('shipwreck_ancuti18').style.fontWeight='normal';
+			  MM_swapImage('auto_img_shipwreck','','./files/shipwreck_proposed.jpg',1);
+			  document.getElementById('auto_img_shipwreck').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/shipwreck_proposed.jpg" style="border:5px solid #4D6C9B" height="561" width="691" alt="Output Image" id="auto_img_shipwreck" /></div></td>
+	</tr>
+</table>
+</div>
+
+<div align="left">
+<h4>Diver</h4>
+<p class="h4margin" >Our method maintains a balance between visibility restoration and noise amplification. As a results, the face of the diver has realistic colors in our result, compared to the others.</p>
+<table>
+	<tr>
+		<td></td>
+		<td><div>Input Image<br /><img src="./files/Ancuti2_input.jpg" style="border:5px solid black" height="450" width="600" alt="Ancuti2 Input"></div></td>
+	</tr>
+	<tr>
+		<td valign ="top">
+			Restoration Methods
+			<br />
+			<button type="button" class="UDCP" id="Ancuti2_UDCP" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_udcp.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #558884'">
+			  UDCP [Drews et al. 2013]
+			</button>
+			<button type="button" class="Galdran" id="Ancuti2_galdran" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_galdran_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #0F6B78'">
+			  [Galdran et al. 2015]
+			</button>
+			<button type="button" class="Ancuti" id="Ancuti2_ancuti" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_NT16_AnCo_RF_10_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #B3B3D2'">
+			  [Ancuti et al. 2016]
+			</button>
+			<button type="button" class="Ancuti17" id="Ancuti2_ancuti17" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_UWCT_ICIP2017_img_00495cDCP_.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #D7F5D5'">
+			  [Ancuti et al. 2017]
+			</button>
+			<button type="button" class="Ancuti18" id="Ancuti2_ancuti18" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_UDCP').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_proposed').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_SF_Ancuti_CVPR_TIP_16_guetzli.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #F2E1B2'">
+			  [Ancuti et al. 2018]
+			</button>
+			<button type="button" class="proposed" id="Ancuti2_proposed" onmousedown="this.style.fontWeight='bold';
+			  document.getElementById('Ancuti2_ancuti').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti17').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_ancuti18').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_galdran').style.fontWeight='normal';
+			  document.getElementById('Ancuti2_UDCP').style.fontWeight='normal';
+			  MM_swapImage('auto_img_Ancuti2','','./files/Ancuti2_proposed.jpg',1);
+			  document.getElementById('auto_img_Ancuti2').style.border='5px solid #4D6C9B'">
+			  Our result
+			</button>
+		</td>
+		<td><div>Output Image<br /><img src="./files/Ancuti2_proposed.jpg" style="border:5px solid #4D6C9B" height="450" width="600" alt="Output Image" id="auto_img_Ancuti2" /></div></td>
+	</tr>
+</table>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------------------>
+<BR> <BR> <HR> <BR>
+
+<a name="References"></a><h3>References</h3>
+
+<p style="text-align:left">
+<span style="background-color: #A2B86C"><b>[Carlevaris-Bianco et al. 2010]</b></span> N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice. Initial results in underwater single image dehazing. In <i>Proc. IEEE/MTS Oceans</i>, 2010.<br>
+<span style="background-color: #7C6E7B"><b>[Chiang and Chen 2012]</b></span> J. Y. Chiang and Y.-C. Chen. Underwater image enhancement by wavelength compensation and dehazing. <i>IEEE Trans. Image Processing</i>, 21(4):1756-1769, 2012.<br>
+<span style="background-color: #558884"><b>[Drews et al. 2013]</b></span> P. Drews, E. Nascimento, F. Moraes, S. Botelho, and M. Campos. Transmission estimation in underwater single images. In <i>Proc. IEEE ICCV Underwater Vision Workshop, pages 825–830,</i> 2013.<br>
+<span style="background-color: #0F6B78"><b>[Galdran et al. 2015]</b></span> A. Galdran, D. Pardo, A. Pico&#x301n, and A. Alvarez-Gila. Automatic red-channel underwater image restoration. <i>J. of Visual Communication and Image Representation</i>, 26:132-145, 2015. <br>
+<span style="background-color: #6A6C7A"><b>[Lu at al. 2015]</b></span> H. Lu, Y. Li, L. Zhang, and S. Serikawa. Contrast enhancement for images in turbid water. <i>JOSA A, 32(5):886–893</i>, 2015.<br>
+<span style="background-color: #7A4A4F"><b>[Peng et al. 2015]</b></span> Y.-T. Peng, X. Zhao, and P. C. Cosman. Single underwater image enhancement using depth estimation based on blurriness. In <i>Proc. IEEE ICIP</i>, 2015.<br>
+<span style="background-color: #7E71A8"><b>[Berman et al. 2016]</b></span> D. Berman, T. Treibitz, and S. Avidan. Non-Local Image Dehazing In <i>Proc. IEEE CVPR</i>, 2016.<br>
+<span style="background-color: #B3B3D2"><b>[Ancuti et al. 2016]</b></span> C. Ancuti, C. O. Ancuti, C. De Vleeschouwer, R. Garcia, and A. C. Bovik. Multi-scale underwater descattering. In <i>Proc.  ICPR</i>, 2016.<br>
+<span style="background-color: #D7F5D5"><b>[Ancuti et al. 2017]</b></span> C. O. Ancuti, C. Ancuti, C. De Vleeschouwer, L. Neumann, and R. Garcia. Color transfer for underwater dehazing and depth estimation. In <i>Proc. IEEE ICIP</i>, 2017<i>(All color transfers were done with a single image)</i>.<br> 
+<span style="background-color: #F2E1B2"><b>[Ancuti et al. 2018]</b></span> . O. Ancuti, C. Ancuti, C. De Vleeschouwer, and P. Bekaert. Color balance and fusion for underwater image enhancement. IEEE Transactions on Image Processing, 27(1):379–393, 2018.<br>
+
+
+<!-- <span style="background-color: #9d70bf"><b>[Luz&oacuten-Gonz&aacutelez et al. 2014]</b></span>LUZ&OacuteN-GONZ&AacuteLEZ, R., NIEVES, J. L., AND ROMERO, J. 2014. Recovering of weather degraded images based on RGB response ratio constancy. <i>Appl. Opt.</i><br>-->
+</p>
+
+
+</div>
+</body>
+</html>
