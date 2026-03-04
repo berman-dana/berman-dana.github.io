@@ -1,0 +1,1 @@
+forfiles /p d:\GDrive\MyWebsite\UnderwaterColorRestoration\files\ /m *.png /c "cmd /c guetzli_windows_x86-64.exe --quality 85 @file @fname_guetzli.jpg"

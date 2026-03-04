@@ -1,0 +1,116 @@
+h1 {
+	margin-bottom: 0.2em;
+	margin-top: 1em;
+}
+	
+h2 {
+}
+
+h3 {
+	margin-bottom: 0.3em;
+}
+
+h4 {
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 2em;
+	margin-left: 145px;
+	margin-bottom: 0.5em;
+}
+
+p.h4margin {
+	margin-left: 145px;
+}
+
+@media (max-width: 900px) {
+    body { 
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+	.container {
+      padding:0;
+      margin:0;
+    }
+}
+
+td {
+	line-height: 150%;
+	padding:10px 0px 10px 10px;
+}
+
+td:first-child {padding-left:0px;}
+
+td.angles {
+    padding-top: .3em;
+    padding-bottom: .3em;
+}
+
+button {
+	/*Basic Button Styles*/
+    display: block;
+    height: 60px;
+    width: 136px;
+    background: #34696f;
+    border: 2px solid rgba(33, 68, 72, 0.59);
+	cursor:pointer;
+	margin-bottom: 5px;
+	
+	/*Text Styles*/
+	color: black;
+    text-align: left;
+	font-size: 1.1em;
+}
+
+
+button.proposed {
+    background: #4D6C9B;
+}
+
+button.UDCP {
+    background: #659894;
+}
+
+button.WCID {
+    background: #7C6E7B;
+}
+
+button.Galdran {
+    background: #0F6B78;
+}
+
+button.Ancuti {
+    background: #B3B3D2;
+}
+
+button.Ancuti17 {
+    background: #D7F5D5;
+}
+
+button.Ancuti18 {
+    background: #F2E1B2;
+}
+
+button.Lu {
+    background: #6A6C7A;
+}
+
+button.Peng {
+    background: #7A4A4F;
+}
+
+button.Carlevaris_Bianco {
+    background: #A2B86C;
+}
+
+button.contrast {
+    background: #2D1C2B;
+    color: white;
+}
+
+button.HL {
+    background: #7E71A8;
+}
+
+
+</style>
+
