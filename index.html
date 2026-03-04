@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dana Berman</title>
+  <meta name="description" content="Personal website of Dana Berman, researcher in Generative Media.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">Dana Berman</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="#research">Selected Publications</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Hero / Bio -->
+    <section id="bio" class="hero">
+      <div class="bio-content">
+        <p>
+          I work at <b>Google Research</b>, at the intersection of my professional interests in generative image
+          processing, and my personal interest in photography and image editing.
+        </p>
+        <p>
+          I completed my PhD at the <b>School of Electrical Engineering</b> at <b>Tel Aviv University</b>, under the
+          supervision of <b>Prof. Shai Avidan</b> and <b>Prof. Tali Treibitz</b>.
+        </p>
+        <p style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+          <a href="https://scholar.google.com/citations?hl=en&user=7vQjfVIAAAAJ" class="link">Google Scholar</a> |
+          <a href="https://github.com/danaberman" class="link">GitHub</a>
+        </p>
+      </div>
+      <div class="profile-container">
+        <img src="assets/profile.jpg" alt="Dana Berman" class="profile-pic" id="profile-img">
+      </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="research">
+      <h2>Selected Publications</h2>
+      <div class="research-list">
+        <!-- Objectmate 2025 -->
+        <div class="publication-item">
+          <img src="assets/objectmate_thumb.png" alt="Objectmate" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">ObjectMate: A Recurrence Prior for Object Insertion and Subject-Driven Generation
+            </div>
+            <div class="pub-authors">Daniel Winter, Asaf Shul, Matan Cohen, <b>Dana Berman</b>, Yael Pritch, Alex
+              Rav-Acha, Yedid Hoshen</div>
+            <div class="pub-venue">Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV), 2025
+            </div>
+            <p style="margin-top: 0.5rem;">
+              <a href="https://arxiv.org/pdf/2412.08645" class="link">arXiv</a> |
+              <a href="https://object-mate.com/" class="link">Project Webpage</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- SVNR 2023 -->
+        <div class="publication-item">
+          <img src="assets/svnr_thumb.png" alt="SVNR" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">SVNR: Spatially-Variant Noise Removal with Denoising Diffusion</div>
+            <div class="pub-authors">Naama Pearl, Yaron Brodsky, <b>Dana Berman</b>, Assaf Zomet, Alex Rav Acha, Daniel
+              Cohen-Or, Dani Lischinski</div>
+            <div class="pub-venue">arXiv preprint arXiv:2306.16052, 2023</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="https://arxiv.org/abs/2306.16052" class="link">arXiv</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- PAMI 2020 -->
+        <div class="publication-item">
+          <img src="assets/haze_lines.jpg" alt="Haze-Lines" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">Single Image Dehazing Using Haze-Lines</div>
+            <div class="pub-authors"><b>Dana Berman</b>, Tali Treibitz, Shai Avidan</div>
+            <div class="pub-venue">IEEE Transactions on Pattern Analysis and Machine Intelligence (PAMI), 2020</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="https://ieeexplore.ieee.org/document/8540862" class="link">IEEE Xplore</a> | <a
+                href="NonLocalDehazing/haze_lines_PAMI2018.pdf" class="link">Paper</a> | <a
+                href="NonLocalDehazing/index.html" class="link">Project Webpage</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- PAMI 2021 (Underwater) -->
+        <div class="publication-item">
+          <img src="assets/underwater.png" alt="Underwater" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">Underwater Single Image Color Restoration Using Haze-Lines and a New Quantitative
+              Dataset</div>
+            <div class="pub-authors"><b>Dana Berman</b>, Deborah Levy, Shai Avidan, Tali Treibitz</div>
+            <div class="pub-venue">IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 43, no. 8, pp.
+              2822-2837, 2021</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="https://ieeexplore.ieee.org/document/9151231" class="link">IEEE Xplore</a> | <a
+                href="https://arxiv.org/abs/1811.01343" class="link">ArXiv</a> | <a
+                href="https://github.com/danaberman/underwater-hl" class="link">Code</a> | <a
+                href="http://csms.haifa.ac.il/profiles/tTreibitz/datasets/ambient_forwardlooking/index.html"
+                class="link">Project Webpage & Dataset</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- BMVC 2017 -->
+        <div class="publication-item">
+          <img src="assets/underwater_thumb.jpg" alt="BMVC 2017" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">Diving into Haze-Lines: Color Restoration of Underwater Images</div>
+            <div class="pub-authors"><b>Dana Berman</b>, Tali Treibitz, Shai Avidan</div>
+            <div class="pub-venue">BMVC 2017</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="UnderwaterColorRestoration/UnderwaterHazeLines_BMVC2017.pdf" class="link">Paper</a> |
+              <a href="UnderwaterColorRestoration/index.html" class="link">Project Webpage</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- ICCP 2017 -->
+        <div class="publication-item">
+          <img src="assets/airlight.png" alt="ICCP 2017" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">Air-light Estimation Using Haze-Lines</div>
+            <div class="pub-authors"><b>Dana Berman</b>, Tali Treibitz, Shai Avidan</div>
+            <div class="pub-venue">ICCP 2017</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="NonLocalDehazing/AirlightEstimation_ICCP2017.pdf" class="link">Paper</a> | <a
+                href="https://github.com/danaberman/non-local-dehazing" class="link">Code</a> | <a
+                href="NonLocalDehazing/index.html" class="link">Project Webpage</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- CVPR 2016 -->
+        <div class="publication-item">
+          <img src="assets/cityscape.jpg" alt="CVPR 2016" class="pub-thumb">
+          <div class="pub-content">
+            <div class="pub-title">Non-Local Image Dehazing</div>
+            <div class="pub-authors"><b>Dana Berman</b>, Tali Treibitz, Shai Avidan</div>
+            <div class="pub-venue">CVPR 2016 (Spotlight)</div>
+            <p style="margin-top: 0.5rem;">
+              <a href="NonLocalDehazing/NonLocalDehazing_CVPR2016.pdf" class="link">Paper</a> | <a
+                href="https://github.com/danaberman/non-local-dehazing" class="link">Code</a> | <a
+                href="NonLocalDehazing/index.html" class="link">Project Webpage</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+</body>
+
+</html>

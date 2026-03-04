@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photography | Dana Berman</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">Dana Berman</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="photography.html" class="active">Photography</a></li>
+        <li><a href="index.html#research">Selected Publications</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Photography</h2>
+      <p style="margin-bottom: 2rem; color: var(--secondary-text);">
+        A collection of scenes from my research and beyond.
+      </p>
+
+      <!-- PHOTOGRAPHY GRID -->
+      <div class="photo-grid">
+
+        <!-- EXAMPLE IMAGE 1 (Research) -->
+        <div class="photo-card">
+          <img src="assets/haze_lines.jpg" alt="Lviv Dehazing">
+          <div class="photo-overlay">
+            <h3>Lviv Dehazing</h3>
+            <p>Haze-lines extraction example.</p>
+          </div>
+        </div>
+
+        <!-- EXAMPLE IMAGE 2 (Research) -->
+        <div class="photo-card">
+          <img src="assets/underwater.png" alt="Underwater Restoration">
+          <div class="photo-overlay">
+            <h3>Underwater Silence</h3>
+            <p>Single image color restoration.</p>
+          </div>
+        </div>
+
+        <!-- EXAMPLE IMAGE 3 (Research) -->
+        <div class="photo-card">
+          <img src="assets/cityscape.jpg" alt="Cityscape Dehazing">
+          <div class="photo-overlay">
+            <h3>Cityscape Dehazing</h3>
+            <p>Non-local dehazing results.</p>
+          </div>
+        </div>
+
+        <!-- EXAMPLE IMAGE 4 (Research) -->
+        <div class="photo-card">
+          <img src="assets/underwater_2.jpg" alt="Coral Reef">
+          <div class="photo-overlay">
+            <h3>Coral Reef</h3>
+            <p>Vibrant underwater life.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHOTO TEMPLATE SECTION -->
+      <div id="template"
+        style="margin-top: 5rem; padding: 2rem; background: var(--card-bg); border-radius: 12px; border: 1px dashed var(--accent-color);">
+        <h3>How to add more photos:</h3>
+        <p style="margin-bottom: 1rem;">Copy and paste the following HTML block into the <code>.photo-grid</code> div
+          above:</p>
+        <pre
+          style="background: var(--bg-color); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;">
+&lt;!-- NEW PHOTO START --&gt;
+&lt;div class="photo-card"&gt;
+    &lt;img src="path/to/your/image.jpg" alt="Image Description"&gt;
+    &lt;div class="photo-overlay"&gt;
+        &lt;h3&gt;Photo Title&lt;/h3&gt;
+        &lt;p&gt;Location or Date&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- NEW PHOTO END --&gt;
+        </pre>
+      </div>
+    </section>
+  </main>
+
+
+</body>
+
+</html>
