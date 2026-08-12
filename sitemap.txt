@@ -1,3 +1,0 @@
-http://www.eng.tau.ac.il/~berman
-http://www.eng.tau.ac.il/~berman/NonLocalDehazing
-http://www.eng.tau.ac.il/~berman/UnderwaterComparison
