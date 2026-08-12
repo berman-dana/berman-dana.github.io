@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+       <loc>https://berman-dana.github.io/</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>1.0000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/index.html</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/photography.html</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/UnderwaterColorRestoration/UnderwaterHazeLines_BMVC2017.pdf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/NonLocalDehazing/AirlightEstimation_ICCP2017.pdf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/NonLocalDehazing/NonLocalDehazing_CVPR2016.pdf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/NonLocalDehazing/Non-commercial_copyright_license.rtf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/NonLocalDehazing/NonLocalDehazing_VisionDay2015slides.pdf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://berman-dana.github.io/UnderwaterColorRestoration/Non-commercial_copyright_license.rtf</loc>
+       <lastmod>2026-08-12T21:02:42+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+</urlset>
